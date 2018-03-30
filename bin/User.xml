@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="test">
+
+	<!-- id:sql语句的唯一标识符
+		parameterType:指定传入参数的类型
+		resultType:返回结果集的类型
+	 -->
+	<select id="findById" parameterType="java.lang.Integer" resultType="com.test.pojo.User">
+		select * from user where userid = #{userid}
+	</select>
+
+	<!-- 若返回类型为集合，则返回值类型为泛型的类型 -->
+	<select id="findByName" parameterType="java.lang.String" resultType="com.test.pojo.User">
+		select * from user where username like #{username}
+	</select>
+</mapper>
