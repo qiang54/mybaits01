@@ -12,8 +12,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from user where userid = #{userid}
 	</select>
 
-	<!-- 若返回类型为集合，则返回值类型为泛型的类型 -->
+	<!-- 若返回类型为集合，则返回值类型为泛型的类型 
+		${}拼接字符串，若传入参数为基本类型，则内的变量必须为value:${value}
+	-->
 	<select id="findByName" parameterType="java.lang.String" resultType="com.test.pojo.User">
-		select * from user where username like #{username}
+		select * from user where username like "%${value}%"
 	</select>
 </mapper>

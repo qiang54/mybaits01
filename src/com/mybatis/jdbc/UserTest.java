@@ -48,7 +48,7 @@ public class UserTest {
 			SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(inputStream);
 			
 		     openSession = factory.openSession();
-			List<User> list = openSession.selectList("test.findByName", "%王%");
+			List<User> list = openSession.selectList("test.findByName", "王");
 			System.out.println(list);
 		} catch (IOException e) {
 			e.printStackTrace();
