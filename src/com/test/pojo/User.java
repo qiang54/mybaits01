@@ -2,15 +2,16 @@ package com.test.pojo;
 
 public class User {
 
-		private int id;
+		private Integer userid;
 		private String username;// 用户姓名
 		private String email;// 
 		private String password;//
-		public int getId() {
-			return id;
+		
+		public int getUserid() { 
+			return userid;
 		}
-		public void setId(int id) {
-			this.id = id;
+		public void setUserid(int userid) {
+			this.userid = userid;
 		}
 		public String getUsername() {
 			return username;
@@ -32,7 +33,7 @@ public class User {
 		}
 		@Override
 		public String toString() {
-			return "User [id=" + id + ", username=" + username + ", email=" + email + ", password=" + password + "]";
+			return "User [userid=" + userid + ", username=" + username + ", email=" + email + ", password=" + password + "]";
 		}
 
 }

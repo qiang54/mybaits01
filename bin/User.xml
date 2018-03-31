@@ -18,4 +18,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="findByName" parameterType="java.lang.String" resultType="com.test.pojo.User">
 		select * from user where username like "%${value}%"
 	</select>
+	
+	<!--#{}：若传入为基本类型，则必须为pojo对应的属性名称；
+		parameterType:
+		返回自增主键，可使用:select LAST_INSERT_ID()  
+	 -->
+	<insert id="insertUser" parameterType="com.test.pojo.User">
+		<!--keyProperty:返回主键 放入传入参数的id 中保存
+			order：相对于insert，在insert之前，为BEFORE ,之后，为AFTER
+		  -->
+		<selectKey keyProperty="userid" order="AFTER" resultType="java.lang.Integer">
+			select LAST_INSERT_ID()
+		</selectKey>
+		insert into user ( username,email,password) values(#{username},#{email},#{password})
+	</insert>
+	
+	<delete id="delUserById" parameterType="java.lang.Integer" >
+		delete from user where userid = #{userid}
+	</delete>
 </mapper>

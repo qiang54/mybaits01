@@ -16,6 +16,7 @@ import com.test.pojo.User;
 
 public class UserTest {
 
+	
 	@Test
 	public void findById()   {
 		
@@ -28,6 +29,7 @@ public class UserTest {
 			 openSession = factory.openSession();
 			User user = openSession.selectOne("test.findById", 1);
 			System.out.println(user);
+			
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -56,11 +58,56 @@ public class UserTest {
 		}finally {
 			openSession.close();
 		}
+		
+		
+		
 	}
 	
+	@Test
+	public void testInsertUser() {
+		String resource = "SqlMapConfig.xml";
+		InputStream inputStream = null;
+		SqlSession openSession = null;
+		User user = new User();
+		user.setUsername("测试");
+		user.setEmail("231@233.com");
+		user.setPassword("322");
+		
+		try {
+			inputStream = Resources.getResourceAsStream(resource);
+			SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(inputStream);
+		    openSession = factory.openSession();
+		    openSession.insert("test.insertUser", user);
+		    
+		    //提交事务
+		    openSession.commit();
+		    System.out.println("id:" + user.getUserid());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	
+	@Test
+	public void testDelUserById() {
+		
+		String resource = "SqlMapConfig.xml";
+		InputStream inputStream = null;
+		SqlSession openSession = null;
+		try {
+			inputStream = Resources.getResourceAsStream(resource);
+			SqlSessionFactory factory = new  SqlSessionFactoryBuilder().build(inputStream);
+			openSession = factory.openSession();
+			openSession.delete("test.delUserById",2); 
+			openSession.commit();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+				
 	
-	
+	}
 	
 	
 	
