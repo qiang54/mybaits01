@@ -10,6 +10,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	4.返回值类型必须为接口中方法的返回值类型
  -->
 <mapper namespace="com.test.mapper.UserMapper">
+
+	<!-- 封装where条件 -->
+	<sql id="user_where">
+		<where>
+			<if test="username != null and username != ''">
+					and username like '%${username}%'
+				</if>
+				<if test="email != null and email != ''">
+					and email like '%${email}%' 
+			</if>
+		</where>
+		
+	</sql>
+	
+	
 <!-- id:sql语句的唯一标识符
 		parameterType:指定传入参数的类型
 		resultType:返回结果集的类型
@@ -22,7 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		${}拼接字符串，若传入参数为基本类型，则内的变量必须为value:${value}
 	-->
 	<select id="findByName" parameterType="java.lang.String" resultType="user">
-		select * from user where username like "%${value}%"
+		select * from user where username like '%${value}%'
 	</select>
 	
 	<!--#{}：若传入为基本类型，则必须为pojo对应的属性名称；
@@ -43,4 +58,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		delete from user where userid = #{userid}
 	</delete>
 
+	<select id="findByVo" parameterType="com.test.pojo.QueryVo" resultType="user" >
+		select * from user where username like '%${user.username}%' and email like '%${user.email}%'
+	</select>
+
+	<select id="findAllCount"  resultType="java.lang.Integer">
+		select count(*) from user
+	</select>
+	
+	<select id="findByDynSql" parameterType="user" resultType="user">
+		select * from user 
+		
+		<!-- 调用条件语句 -->
+		<include refid="user_where"></include>
+		
+		<!-- <if test="username != null and username != ''">
+			and username like '%${username}%'
+		</if>
+		<if test="email != null and email != ''">
+			and email like '%${email}%' 
+		</if> -->
+	</select>
+	
+	
 </mapper>

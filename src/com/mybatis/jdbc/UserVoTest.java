@@ -12,9 +12,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.test.mapper.UserMapper;
+import com.test.pojo.QueryVo;
 import com.test.pojo.User;
 
-public class UserMapperTest {
+public class UserVoTest {
 
 	private SqlSessionFactory factory;
 	@Before
@@ -25,51 +26,47 @@ public class UserMapperTest {
 		
 	}
 	/**
-	 * 代理方式
-	 * getMapper(UserMapper.class)
+	 *通过姓名和邮箱，模糊查询
 	 */
 	@Test
-	public void testFindById() {
+	public void testFindByVo() {
 		
 		SqlSession openSession = factory.openSession();
 		UserMapper userMapper = openSession.getMapper(UserMapper.class);
-		User user = userMapper.findById(3);
-		System.out.println(user);
-	}
-	
-	/**
-	 * 代理
-	 * 按姓名查询
-	 */
-	@Test
-	public void testFindByName() {
-		
-		SqlSession openSession = factory.openSession();
-		UserMapper userMapper = openSession.getMapper(UserMapper.class);
-		List<User> list = userMapper.findByName("王");
+		QueryVo vo = new QueryVo();
+		User user = new User();
+		user.setUsername("小");
+		user.setEmail("com");
+		vo.setUser(user);
+		List<User> list = userMapper.findByVo(vo);
 		System.out.println(list);
 	}
 	
 	/**
-	 * 代理
-	 * 插入
+	 * 查找总个数
 	 */
 	@Test
-	public void testInsertUser() {
+	public void testFindAllCount() {
 		
 		SqlSession openSession = factory.openSession();
 		UserMapper userMapper = openSession.getMapper(UserMapper.class);
-		
-		User user = new User();
-		user.setUsername("你哈"); 
-		user.setEmail("231@ppp.com");
-		user.setPassword("234");
-		
-		userMapper.insertUser(user);
-		openSession.commit();
-
+		Integer count = userMapper.findAllCount();
+		System.out.println(count);
 	}
 	
-	
-	
+	/**
+	 * 动态sql
+	 * 拼接查询，模糊查询，
+	 */
+	@Test
+	public void testFindByDynSql() {
+		
+		SqlSession openSession = factory.openSession();
+		UserMapper userMapper = openSession.getMapper(UserMapper.class);
+		User user = new User();
+		//user.setUsername("小");
+		//user.setEmail("com");
+		List<User> list = userMapper.findByDynSql(user);
+		System.out.println(list);
+	}
 }
