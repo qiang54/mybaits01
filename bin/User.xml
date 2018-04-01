@@ -36,4 +36,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="delUserById" parameterType="java.lang.Integer" >
 		delete from user where userid = #{userid}
 	</delete>
+	
+	<update id="updateUserById" parameterType="com.test.pojo.User">
+		update user set username = #{username} where userid = #{userid}
+	</update>
 </mapper>

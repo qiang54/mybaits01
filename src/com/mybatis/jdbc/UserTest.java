@@ -2,6 +2,7 @@ package com.mybatis.jdbc;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
 import java.util.List;
 
 import javax.management.openmbean.OpenMBeanAttributeInfoSupport;
@@ -16,7 +17,9 @@ import com.test.pojo.User;
 
 public class UserTest {
 
-	
+	/**
+	 * 通过id寻找
+	 */
 	@Test
 	public void findById()   {
 		
@@ -38,7 +41,9 @@ public class UserTest {
 		}
 		
 	}
-	
+	/**
+	 * 通过名称寻找
+	 */
 	@Test
 	public void findByName() {
 		
@@ -63,6 +68,9 @@ public class UserTest {
 		
 	}
 	
+	/**
+	 * 插入
+	 */
 	@Test
 	public void testInsertUser() {
 		String resource = "SqlMapConfig.xml";
@@ -89,6 +97,9 @@ public class UserTest {
 		
 	}
 	
+	/**
+	 * 删除
+	 */
 	@Test
 	public void testDelUserById() {
 		
@@ -109,8 +120,22 @@ public class UserTest {
 	
 	}
 	
-	
-	
+	/**
+	 * 更新
+	 * @throws IOException 
+	 */
+	@Test
+	public void testUpdateUserById() throws IOException {
+		String resource = "SqlMapConfig.xml";
+		InputStream inputStream = Resources.getResourceAsStream(resource);
+		SqlSessionFactory factory = new  SqlSessionFactoryBuilder().build(inputStream);
+		SqlSession openSession = factory.openSession();
+		User user = new User();
+		user.setUserid(6);
+		user.setUsername("王小");
+		openSession.update("test.updateUserById", user);
+		openSession.commit();
+	}
 	
 	
 }
