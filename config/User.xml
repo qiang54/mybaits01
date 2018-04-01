@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="test">
+
+	<!-- id:sql语句的唯一标识符
+		parameterType:指定传入参数的类型
+		resultType:返回结果集的类型
+	 -->
+	<select id="findById" parameterType="java.lang.Integer" resultType="com.test.pojo.User">
+		select * from user where userid = #{userid}
+	</select>
+
+	<!-- 若返回类型为集合，则返回值类型为泛型的类型 
+		${}拼接字符串，若传入参数为基本类型，则内的变量必须为value:${value}
+	-->
+	<select id="findByName" parameterType="java.lang.String" resultType="com.test.pojo.User">
+		select * from user where username like "%${value}%"
+	</select>
+	
+	<!--#{}：若传入为基本类型，则必须为pojo对应的属性名称；
+		parameterType:
+		返回自增主键，可使用:select LAST_INSERT_ID()  
+	 -->
+	<insert id="insertUser" parameterType="com.test.pojo.User">
+		<!--keyProperty:返回主键 放入传入参数的id 中保存
+			order：相对于insert，在insert之前，为BEFORE ,之后，为AFTER
+		  -->
+		<selectKey keyProperty="userid" order="AFTER" resultType="java.lang.Integer">
+			select LAST_INSERT_ID()
+		</selectKey>
+		insert into user ( username,email,password) values(#{username},#{email},#{password})
+	</insert>
+	
+	<delete id="delUserById" parameterType="java.lang.Integer" >
+		delete from user where userid = #{userid}
+	</delete>
+	
+	<update id="updateUserById" parameterType="com.test.pojo.User">
+		update user set username = #{username} where userid = #{userid}
+	</update>
+</mapper>
