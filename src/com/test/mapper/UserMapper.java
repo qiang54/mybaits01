@@ -4,6 +4,8 @@ package com.test.mapper;
 
 import java.util.List;
 
+import com.test.pojo.CustOrder;
+import com.test.pojo.Orders;
 import com.test.pojo.QueryVo;
 import com.test.pojo.User;
 /**
@@ -27,4 +29,10 @@ public interface UserMapper {
 	public Integer findAllCount();
 	//动态sql
 	public List<User> findByDynSql(User user);
+	
+	//foreach 标签
+	public List<User> findByIds(QueryVo vo);
+
+	public List<CustOrder> findByOrderAndUser();
+	public List<Orders> findByOrderAndUser2();
 }

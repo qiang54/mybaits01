@@ -80,5 +80,58 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</if> -->
 	</select>
 	
+	<!-- foreach 标签
+		collection：传入的集合名称
+		item：遍历集合时，变量名，自定义
+		open：userid in (
+		close：)
+		separator：分隔符‘,’
+	 -->
+	 <select id="findByIds" parameterType="com.test.pojo.QueryVo" resultType="user">
+	 	select * from user 
+	 	<where>
+	 		<if test="ids != null">
+	 			<foreach collection="ids" item="id" open="userid in (" close="userid in (" separator=",">
+	 				#{id}
+	 			</foreach>
+	 		</if>
+	 	</where>
+	 </select>
+	
+	<!-- 关联查询:1.一对一自动映射 -->
+	<select id="findByOrderAndUser" resultType="com.test.pojo.CustOrder">
+		select o.*, u.userid uid, username, email, password
+		from orders o, user u
+		where o.user_id = u.userid
+	</select>
+	
+	<!-- 2.一对一手动映射
+		mybatis标准方法
+	 -->
+	 <resultMap type="com.test.pojo.Orders" id="Order_User_resultMap">
+	 	<id column="oid" property="oid"/>
+	 	
+	 	<result column="user_id" property="user_id"/>
+	 	<result column="number" property="number"/>
+	 	<result column="note" property="note"/>
+	 	
+	 	<association property="user" javaType="com.test.pojo.User">
+	 		<id column="userid" property="userid"/>
+	 		
+	 		<result column="username" property="username"/>
+	 		<result column="email" property="email"/>
+	 		<result column="password" property="password"/>
+	 		
+	 	</association>
+	 </resultMap>
+	 
+	<select id="findByOrderAndUser2" resultMap="Order_User_resultMap">
+		select o.*, u.userid uid, username, email, password
+		from orders o, user u
+		where o.user_id = u.userid
+	</select>
+	
+	
+	
 	
 </mapper>
